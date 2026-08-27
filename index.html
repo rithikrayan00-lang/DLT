@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malaria Cell Detection</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 40px 16px;
+            background: #f4f7f6;
+            color: #273238;
+        }
+        .card {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h1 { color: #273238; }
+        input[type="file"] { margin: 20px 0; max-width: 100%; }
+        button {
+            padding: 10px 20px;
+            border: 0;
+            border-radius: 5px;
+            background: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover { background: #0056b3; }
+        .error { color: #c0392b; }
+        .result {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .infected { background: #ffe6e6; color: #d9534f; }
+        .uninfected { background: #e6ffe6; color: #388e3c; }
+        .uploaded-image {
+            display: block;
+            width: 100%;
+            max-height: 320px;
+            margin-top: 24px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #eef2f1;
+        }
+        .note {
+            margin: 16px 0 0;
+            color: #5f6b70;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <h1>Malaria Cell Detector</h1>
+        <form method="post" enctype="multipart/form-data">
+            <label for="file">Choose a cell image</label><br>
+            <input id="file" type="file" name="file" accept="image/*" required><br>
+            <button type="submit">Upload &amp; Detect</button>
+        </form>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+
+        {% if result %}
+            {% if image_path %}
+                <img class="uploaded-image" src="{{ image_path }}" alt="Uploaded blood cell image">
+            {% endif %}
+            <section class="result {% if 'Parasitized' in result %}infected{% else %}uninfected{% endif %}">
+                <h2>Result: {{ result }}</h2>
+                <p>Confidence: {{ confidence }}</p>
+                <small>Detection mode: {{ detection_mode }}</small>
+            </section>
+            <p class="note">Use microscope cell images only. Illustrations, screenshots, and other photos can produce unreliable results.</p>
+        {% endif %}
+    </main>
+</body>
+</html>
